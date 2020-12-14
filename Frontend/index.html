@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="styles.css" rel="stylesheet" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+</head>
+<body>
+
+<!-- Top navigation -->
+<div class="topnav">
+
+  <!-- Centered link -->
+  <div class="topnav-centered">
+    <a href="#home" class="active">Home</a>
+  </div>
+  
+  <!-- Left-aligned links (default) -->
+  <a href="#news">News</a>
+  <a href="#contact">Contact</a>
+  
+  <!-- Right-aligned links -->
+  <div class="topnav-right">
+    <a href="#search">Search</a>
+    <a href="#about">About</a>
+  </div>
+  
+</div>
+
+<div style="padding-left:16px">
+    
+    <h2>Responsive Top Navigation with Centered and Right-Aligned Links</h2>
+    <p>Resize the browser window to see the responsive effect.</p>
+    <div id='info'>
+    </div>
+    <div>
+        <p><span id="seconds">00</span>:<span id="tens">00</span></p>
+        <button id="button-start">Start</button>
+        <button id="button-stop">Stop</button>
+        <button id="button-reset">Reset</button>
+    </div>
+
+
+  
+
+  
+</div>
+
+<script>
+        // Getting 'Info' div in js hands
+    var info = document.getElementById('info');
+    var time = document.getElementById('time');
+    var coords = [];
+    var cols = ["x","y","time","stan","button"];
+   
+    
+
+    // Creating function that will tell the position of cursor
+    // PageX and PageY will getting position values and show them in P
+    var t0 = performance.now();
+    document.onmousedown = mouseDown;
+    document.onmouseup   = mouseUp;
+    var mouseState = "up";
+    var mouseLeft = "none";
+
+    function tellPos(p){
+
+        info.innerHTML = 'Position X : ' + p.pageX + '<br />Position Y : ' + p.pageY;
+        var t1 = performance.now();  
+        coords.push([p.pageX, p.pageY, t1, mouseState, mouseLeft]);
+        console.log(coords)
+    }
+    function mouseDown(ev) {
+        mouseState = "down";
+        if(ev.which ===1){
+            mouseLeft = "left"
+            
+        }
+        if(ev.which ===3){
+            mouseLeft = "right"
+            
+        }
+        
+    }
+
+    function mouseUp(ev) {
+        mouseState = "up";
+        mouseLeft = "none";
+    }
+
+
+
+    setInterval(function postCoords(){
+        $.ajax({
+            url: "http://9418c3d8576b.ngrok.io/verify/collecting/",
+            type: "POST",
+            data: {
+                user : "user1",
+                form:  cols,
+                myArray : coords
+            }
+        }).done(function(data,text,jQxhr){
+       alert("success");
+    });
+    }, 5000);
+
+    window.onload = function () {
+  
+    var seconds = 00; 
+    var tens = 00; 
+    var appendTens = document.getElementById("tens")
+    var appendSeconds = document.getElementById("seconds")
+    var buttonStart = document.getElementById('button-start');
+    var buttonStop = document.getElementById('button-stop');
+    var buttonReset = document.getElementById('button-reset');
+    var Interval ;
+
+        
+        clearInterval(Interval);
+        Interval = setInterval(startTimer, 10);
+    
+    
+    buttonStop.onclick = function() {
+        clearInterval(Interval);
+    }
+    
+
+    buttonReset.onclick = function() {
+        clearInterval(Interval);
+        tens = "00";
+        seconds = "00";
+        appendTens.innerHTML = tens;
+        appendSeconds.innerHTML = seconds;
+    }
+    
+    
+    
+    function startTimer () {
+        tens++; 
+        
+        if(tens < 9){
+        appendTens.innerHTML = "0" + tens;
+        }
+        
+        if (tens > 9){
+        appendTens.innerHTML = tens;
+        
+        } 
+        
+        if (tens > 99) {
+        console.log("seconds");
+        seconds++;
+        appendSeconds.innerHTML = "0" + seconds;
+        tens = 0;
+        appendTens.innerHTML = "0" + 0;
+        }
+        
+        if (seconds > 9){
+        appendSeconds.innerHTML = seconds;
+        }
+    
+    }
+    
+
+    }
+
+    // addEventListener('mousemove', tellPos, false);
+    addEventListener('mousemove', tellPos, false);
+</script>
+</body>
+</html>
