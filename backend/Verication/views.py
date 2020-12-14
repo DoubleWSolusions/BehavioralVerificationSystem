@@ -18,12 +18,12 @@ class CollectingData(APIView):
         try:
             res = request.data
             user = res['user']
-            data = np.array(res.getlist('myArray[coords][]'))
+            data = np.array(res.getlist('myArray[]'))
             data = data.reshape(-1, 5)
             cols = res.getlist('form[]')
             df = pd.DataFrame(data=data, columns=cols)
+            print(df)
             path = get_file_path(user)
-            print(path)
             df.to_csv(path)
             features = ExtractedFeatures(user=user, features_file=path)
             serializer = ExtractedFeatureSerializer(features)
