@@ -25,7 +25,9 @@ SECRET_KEY = 'g!c5y9=%eohb&x32v@az%x#b3*=$nyk5@par6_quin)r2$1ic4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 102400
 
 
 # Application definition
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'Verication',
 ]
 
 MIDDLEWARE = [

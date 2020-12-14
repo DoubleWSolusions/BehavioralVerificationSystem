@@ -1,3 +1,6 @@
-from django.test import TestCase
+from django.http import HttpResponse
 
-# Create your tests here.
+
+def edit_lists(request):
+    data = request.POST.getlist('myArray[]')
+    return HttpResponse('Success')

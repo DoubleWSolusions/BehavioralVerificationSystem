@@ -1,5 +1,7 @@
 from django.db import models
 import pandas as pd
+import uuid
+import os
 
 
 class ExtractedFeatures(models.Model):
@@ -10,3 +12,7 @@ class ExtractedFeatures(models.Model):
         return self.user
 
 
+def get_file_path(filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join('media\\features', filename)
