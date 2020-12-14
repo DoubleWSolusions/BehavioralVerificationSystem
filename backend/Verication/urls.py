@@ -6,4 +6,5 @@ from django.conf import settings
 
 urlpatterns = [
     path('collecting/', views.CollectingData.as_view(), name='collecting'),
+    path('check/', views.VerificationData.as_view(), name='check'),
 ]
