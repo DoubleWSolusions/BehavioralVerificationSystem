@@ -14,5 +14,5 @@ class ExtractedFeatures(models.Model):
 
 def get_file_path(filename):
     ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
+    filename = "%s.%s" % (ext, uuid.uuid4())
     return os.path.join('media\\features', filename)
