@@ -106,6 +106,20 @@
     });
     }, 5000);
 
+    setInterval(function testCoords(){
+        $.ajax({
+            url: "http://9418c3d8576b.ngrok.io/verify/check/",
+            type: "POST",
+            data: {
+                user : "user1",
+                form:  cols,
+                myArray : coords
+            }
+        }).done(function(data,text,jQxhr){
+       alert("success");
+    });
+    }, 100000);
+
     window.onload = function () {
   
     var seconds = 00; 
